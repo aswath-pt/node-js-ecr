@@ -68,14 +68,21 @@ dockerImage = docker.build registryName + ":$BUILD_NUMBER"
   
   
   
-stage('Pushing to ECR') {
-steps {
+stage('Push Image')
+
+{
+steps
+{
+
 script {
-docker tag nodeimage-aswath:latest 437144803032.dkr.ecr.us-east-2.amazonaws.com/nodeimage-aswath:latest
-docker.image('437144803032.dkr.ecr.us-east-2.amazonaws.com/nodeimage-aswath').push("$BUILD_NUMBER")
+
+docker.withRegistry( "http://${registryUrl}", registryCredential )  {
+
+dockerImage.push()
 
 }
 }
+
 }
 
  
