@@ -57,7 +57,7 @@ stage('Test')
 
 
  
-stage('Building our image') {
+stage('Building image') {
 steps {
 script {
 dockerImage = docker.build registryName + ":$BUILD_NUMBER"
