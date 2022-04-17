@@ -73,14 +73,13 @@ steps {
 script {
 docker.withRegistry('https://437144803032.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2:aws-aswath') {
 dockerImage.push()
+sh "docker image prune --all --force"
 
 
-
 }
 }
 }
 }
-  
 
   
 }
