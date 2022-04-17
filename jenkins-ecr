@@ -71,8 +71,8 @@ dockerImage = docker.build registryName + ":$BUILD_NUMBER"
 stage('Pushing to ECR') {
 steps {
 script {
-docker.withRegistry('https://437144803032.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2:aws-aswath') {
-docker.image('437144803032.dkr.ecr.us-east-2.amazonaws.com/nodeimage-aswath').push('$BUILD_NUMBER')
+docker tag nodeimage-aswath:latest 437144803032.dkr.ecr.us-east-2.amazonaws.com/nodeimage-aswath:latest
+docker.image('437144803032.dkr.ecr.us-east-2.amazonaws.com/nodeimage-aswath').push("$BUILD_NUMBER")
 
 }
 }
