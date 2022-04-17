@@ -1,0 +1,98 @@
+pipeline {
+
+ 
+  environment {
+        
+        registryName = "nodeimage-aswath"
+        registryCredential = 'aws-aswath'
+        dockerImage = ''
+        registryUrl = '437144803032.dkr.ecr.us-east-2.amazonaws.com/nodeimage-aswath'
+    }
+  
+  
+
+  
+  
+agent any
+stages
+{
+
+        stage('Git checkout')
+
+         {
+             steps
+                {
+                    git branch: 'master',
+                    credentialsId: 'github-aswath',
+                    url: 'https://github.com/aswath-pt/node-js-ecr.git'
+
+                  }
+              }
+  
+  
+  
+  
+stage('Build')
+{
+          steps
+
+                {
+                    sh "npm install"
+                  }
+
+}
+
+
+stage('Test')
+
+              {
+                       steps
+                             {
+
+                       sh "npm run test -- --code-coverage --no-watch --no-progress --browsers ChromeHeadlessNoSandbox"
+                              }
+                }
+
+
+
+ 
+stage('Building our image') {
+steps {
+script {
+dockerImage = docker.build registryName + ":$BUILD_NUMBER"
+ 
+}
+}
+}
+  
+  
+  
+stage('Push Image')
+
+{
+steps
+{
+
+script {
+
+docker.withRegistry( "http://${registryUrl}", registryCredential )  {
+
+dockerImage.push()
+
+}
+}
+
+}
+
+ 
+}
+
+  
+
+  
+
+
+}
+
+
+}
